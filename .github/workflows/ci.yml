@@ -1,0 +1,58 @@
+name: Validate
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ASPNETCORE_ENVIRONMENT: Development
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: dotnet test AnimeTracker.slnx --configuration Release
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run lint && npm run format:check && npm run build
+        working-directory: frontend
+      - run: npx playwright install --with-deps chromium
+        working-directory: frontend
+      - name: Start API
+        run: |
+          dotnet run --project backend/AnimeTracker.Api --no-launch-profile --urls http://localhost:5000 > /tmp/animetrack-api.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://localhost:5000/api/health; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/animetrack-api.log
+          exit 1
+      - run: npm run test:e2e
+        working-directory: frontend
+      - name: Build the production package
+        run: |
+          dotnet publish backend/AnimeTracker.Api -c Release -o .tools/publish
+          mkdir -p .tools/publish/wwwroot
+          cp -R frontend/dist/. .tools/publish/wwwroot/
+      - name: Check the published application
+        env:
+          ASPNETCORE_ENVIRONMENT: Production
+        run: |
+          dotnet .tools/publish/AnimeTracker.Api.dll --contentRoot "$PWD/.tools/publish" --urls http://localhost:5001 > /tmp/animetrack-publish.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://localhost:5001/api/health; then break; fi
+            sleep 1
+          done
+          cd frontend
+          node scripts/smoke-production.mjs
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-traces
+          path: frontend/test-results

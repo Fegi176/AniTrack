@@ -1,0 +1,3 @@
+* text=auto eol=lf
+*.png binary
+backend/AnimeTracker.Api/Data/LICENSE.catalog.txt -text whitespace=-blank-at-eol

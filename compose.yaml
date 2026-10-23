@@ -1,0 +1,12 @@
+services:
+  animetrack:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - anime-data:/app/App_Data
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    restart: unless-stopped
+volumes:
+  anime-data:

@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/backend/">
+    <Project Path="backend/AnimeTracker.Api/AnimeTracker.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AnimeTracker.Tests/AnimeTracker.Tests.csproj" />
+  </Folder>
+</Solution>

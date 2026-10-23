@@ -1,0 +1,10 @@
+**/node_modules
+**/bin
+**/obj
+**/App_Data
+**/dist
+**/test-results
+**/playwright-report
+.tools
+.git
+docs/screenshots
