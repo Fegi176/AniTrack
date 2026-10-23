@@ -83,9 +83,35 @@ try {
   assert.equal(avatar.headers()["content-type"], "image/png");
   await page.reload();
   await page.locator(`.user-card img[src="${avatarUrl}"]`).waitFor();
+  const csrf = await (
+    await page.request.get(`${baseUrl}/api/auth/csrf`)
+  ).json();
+  const completed = await page.request.put(`${baseUrl}/api/library/199`, {
+    headers: { "X-CSRF-TOKEN": csrf.token },
+    data: {
+      status: "Completed",
+      episodesWatched: 1,
+      score: 9,
+      notes: "",
+      revision: null,
+    },
+  });
+  assert.equal(completed.status(), 200);
+  await page.goto(`${baseUrl}/insights/history`);
+  await page
+    .getByRole("link", { name: "Spirited Away", exact: true })
+    .waitFor();
+  assert.equal(await page.locator(".activity-row").count(), 1);
+  await page.goto(`${baseUrl}/insights/achievements`);
+  await page
+    .locator(".achievement-card.is-unlocked")
+    .filter({
+      has: page.getByRole("heading", { name: "Movie night", exact: true }),
+    })
+    .waitFor();
   assert.deepEqual(errors, []);
   console.log(
-    "Published app passed: login entry, SPA routing, production config, account creation, persistent sessions and pictures, and no browser errors.",
+    "Published app passed: login entry, SPA routing, production config, persistent sessions and pictures, history, achievements, and no browser errors.",
   );
 } finally {
   await browser.close();

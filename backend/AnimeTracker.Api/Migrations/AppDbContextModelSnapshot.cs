@@ -205,6 +205,67 @@ namespace AnimeTracker.Api.Migrations
                     b.ToTable("CatalogSnapshots");
                 });
 
+            modelBuilder.Entity("AnimeTracker.Api.Domain.LibraryActivity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AnimeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("FromEpisodes")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("FromScore")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FromStatus")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ImportedAdded")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ImportedSkipped")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ImportedUpdated")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("NotesChanged")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("OccurredAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ToEpisodes")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ToScore")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ToStatus")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "OccurredAt", "Id");
+
+                    b.ToTable("Activities");
+                });
+
             modelBuilder.Entity("AnimeTracker.Api.Domain.LibraryEntry", b =>
                 {
                     b.Property<int>("Id")
@@ -255,6 +316,23 @@ namespace AnimeTracker.Api.Migrations
 
                             t.HasCheckConstraint("CK_Library_Score", "Score IS NULL OR (Score >= 1 AND Score <= 10)");
                         });
+                });
+
+            modelBuilder.Entity("AnimeTracker.Api.Domain.UserAchievement", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UnlockedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "Code");
+
+                    b.ToTable("Achievements");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -385,6 +463,17 @@ namespace AnimeTracker.Api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AnimeTracker.Api.Domain.LibraryActivity", b =>
+                {
+                    b.HasOne("AnimeTracker.Api.Domain.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AnimeTracker.Api.Domain.LibraryEntry", b =>
                 {
                     b.HasOne("AnimeTracker.Api.Domain.Anime", "Anime")
@@ -400,6 +489,17 @@ namespace AnimeTracker.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Anime");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AnimeTracker.Api.Domain.UserAchievement", b =>
+                {
+                    b.HasOne("AnimeTracker.Api.Domain.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

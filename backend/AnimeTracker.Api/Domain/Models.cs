@@ -34,6 +34,37 @@ public sealed class Anime
 
 public enum WatchStatus { Watching, Completed, PlanToWatch, OnHold, Dropped }
 
+public enum ActivityKind { Added, Updated, Removed, Imported }
+
+public sealed class LibraryActivity
+{
+    public long Id { get; set; }
+    public string UserId { get; set; } = "";
+    public AppUser User { get; set; } = null!;
+    public int? AnimeId { get; set; }
+    public string Title { get; set; } = "";
+    public ActivityKind Kind { get; set; }
+    public WatchStatus? FromStatus { get; set; }
+    public WatchStatus? ToStatus { get; set; }
+    public int? FromEpisodes { get; set; }
+    public int? ToEpisodes { get; set; }
+    public int? FromScore { get; set; }
+    public int? ToScore { get; set; }
+    public bool NotesChanged { get; set; }
+    public int ImportedAdded { get; set; }
+    public int ImportedUpdated { get; set; }
+    public int ImportedSkipped { get; set; }
+    public DateTime OccurredAt { get; set; } = DateTime.UtcNow;
+}
+
+public sealed class UserAchievement
+{
+    public string UserId { get; set; } = "";
+    public AppUser User { get; set; } = null!;
+    public string Code { get; set; } = "";
+    public DateTime UnlockedAt { get; set; } = DateTime.UtcNow;
+}
+
 public sealed class CatalogSnapshot
 {
     public int Id { get; set; } = 1;

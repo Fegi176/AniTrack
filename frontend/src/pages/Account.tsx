@@ -16,6 +16,7 @@ import { statusLabels } from "../types";
 import type { Insights, User } from "../types";
 import { counted, number } from "../format";
 import { Avatar } from "../components/Avatar";
+import { InsightsNav } from "../components/InsightsNav";
 import {
   Empty,
   ErrorPanel,
@@ -40,6 +41,7 @@ export function InsightsPage() {
         title="Your viewing, in perspective."
         text="See your progress, favorite genres, and the time spent with your stories."
       />
+      <InsightsNav />
       {insights.isPending ? (
         <p className="muted">Gathering your insights…</p>
       ) : insights.isError ? (

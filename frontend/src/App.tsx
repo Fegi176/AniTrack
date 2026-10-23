@@ -51,6 +51,7 @@ import { Library } from "./pages/Library";
 import { InsightsPage, SettingsPage } from "./pages/Account";
 import { LoginPage } from "./pages/Login";
 import { Avatar } from "./components/Avatar";
+import { HistoryPage, AchievementsPage } from "./pages/Progress";
 import "./App.css";
 import { useMobileNavigation } from "./hooks/useMobileNavigation";
 
@@ -99,10 +100,10 @@ function Shell() {
       setAuthOpen(false);
       setMobileOpen(false);
       client.setQueryData(["me"], null);
-      void client.cancelQueries({ queryKey: ["library"] });
-      void client.cancelQueries({ queryKey: ["insights"] });
-      client.removeQueries({ queryKey: ["library"] });
-      client.removeQueries({ queryKey: ["insights"] });
+      for (const key of ["library", "insights", "history", "achievements"]) {
+        void client.cancelQueries({ queryKey: [key] });
+        client.removeQueries({ queryKey: [key] });
+      }
     };
     const refreshSession = () => {
       clearPrivateState();
@@ -154,7 +155,7 @@ function Shell() {
       ? "Discover"
       : location.pathname === "/library"
         ? "My library"
-        : location.pathname === "/insights"
+        : location.pathname.startsWith("/insights")
           ? "Your insights"
           : location.pathname === "/settings"
             ? "Settings"
@@ -385,6 +386,11 @@ function Shell() {
               <Route path="/discover" element={<Discover />} />
               <Route path="/library" element={<Library />} />
               <Route path="/insights" element={<InsightsPage />} />
+              <Route path="/insights/history" element={<HistoryPage />} />
+              <Route
+                path="/insights/achievements"
+                element={<AchievementsPage />}
+              />
               <Route path="/settings" element={<SettingsPage />} />
               <Route
                 path="*"

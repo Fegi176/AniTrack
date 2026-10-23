@@ -66,11 +66,12 @@ public static class AuthEndpoints
                 {
                     var anime = titles[i];
                     var status = i < 3 ? WatchStatus.Watching : i < 5 ? WatchStatus.Completed : WatchStatus.PlanToWatch;
-                    var entry = new LibraryEntry { UserId = user.Id, AnimeId = anime.Id };
+                    var entry = new LibraryEntry { UserId = user.Id, AnimeId = anime.Id, Anime = anime };
                     entry.Apply(new(status, Math.Min(5 + i * 2, Math.Max(0, anime.Episodes - 1)), i < 5 ? 8 + i % 3 : null, "", null), anime);
                     db.Library.Add(entry);
+                    ProgressLog.Record(db, entry, null);
                 }
-                await db.SaveChangesAsync();
+                await ProgressLog.SaveAsync(db, user.Id);
                 await signIn.SignInAsync(user, false);
                 return Results.Ok(user.ToResponse());
             }).RequireRateLimiting("auth");

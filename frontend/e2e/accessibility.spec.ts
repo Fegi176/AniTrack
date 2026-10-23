@@ -6,6 +6,8 @@ const routes = [
   ["/discover", "A world of stories."],
   ["/library", "Every story, in one place."],
   ["/insights", "Your viewing, in perspective."],
+  ["/insights/history", "Your viewing history."],
+  ["/insights/achievements", "Your achievements."],
   ["/settings", "Profile & data."],
 ] as const;
 for (const width of [1440, 768, 390, 320]) {
@@ -52,6 +54,10 @@ for (const width of [1440, 768, 390, 320]) {
         await expect(page.locator(".library-row")).toHaveCount(7);
       if (path === "/insights")
         await expect(page.locator(".rating-chart")).toBeVisible();
+      if (path === "/insights/history")
+        await expect(page.locator(".activity-row")).toHaveCount(7);
+      if (path === "/insights/achievements")
+        await expect(page.locator(".achievement-card")).toHaveCount(9);
       if (path === "/discover")
         await expect(page.locator(".anime-card")).toHaveCount(12);
       expect(

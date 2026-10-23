@@ -30,6 +30,8 @@ export function useRefreshLibrary() {
     await Promise.all([
       client.invalidateQueries({ queryKey: ["library"] }),
       client.invalidateQueries({ queryKey: ["insights"] }),
+      client.invalidateQueries({ queryKey: ["history"] }),
+      client.invalidateQueries({ queryKey: ["achievements"] }),
     ]);
   };
 }

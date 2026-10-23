@@ -23,6 +23,8 @@ for (const width of [1440, 768, 390, 320]) {
     ["discover", "/discover"],
     ["library", "/library"],
     ["insights", "/insights"],
+    ["history", "/insights/history"],
+    ["achievements", "/insights/achievements"],
     ["settings", "/settings"],
   ]) {
     await page.goto(`http://127.0.0.1:5173${path}`);
@@ -30,6 +32,10 @@ for (const width of [1440, 768, 390, 320]) {
     if (name === "library")
       await page.locator(".library-row").first().waitFor();
     if (name === "insights") await page.locator(".status-chart").waitFor();
+    if (name === "history")
+      await page.locator(".activity-row").first().waitFor();
+    if (name === "achievements")
+      await page.locator(".achievement-card").first().waitFor();
     if (name === "discover")
       await page.locator(".anime-card").first().waitFor();
     if (name === "overview")

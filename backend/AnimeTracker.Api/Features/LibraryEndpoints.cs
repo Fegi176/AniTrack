@@ -26,13 +26,15 @@ public static class LibraryEndpoints
             var entry = await db.Library.Include(e => e.Anime).FirstOrDefaultAsync(e => e.UserId == userId && e.AnimeId == animeId);
             if ((entry is not null && entry.Revision != request.Revision) || (entry is null && request.Revision.HasValue))
                 return Conflict();
+            var before = entry is null ? null : ProgressLog.Read(entry);
             if (entry is null)
             {
                 entry = new LibraryEntry { UserId = userId, AnimeId = animeId, Anime = anime };
                 db.Library.Add(entry);
             }
             entry.Apply(request, anime);
-            try { await db.SaveChangesAsync(); }
+            ProgressLog.Record(db, entry, before);
+            try { await ProgressLog.SaveAsync(db, userId); }
             catch (DbUpdateConcurrencyException) { return Conflict(); }
             catch (DbUpdateException ex) when (ex.InnerException is Microsoft.Data.Sqlite.SqliteException { SqliteErrorCode: 19 }) { return Conflict(); }
             return Results.Ok(entry.ToResponse());
@@ -40,11 +42,12 @@ public static class LibraryEndpoints
         library.MapDelete("/{animeId:int}", async (int animeId, Guid revision, ClaimsPrincipal user, AppDbContext db) =>
         {
             var userId = user.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            var entry = await db.Library.FirstOrDefaultAsync(e => e.UserId == userId && e.AnimeId == animeId);
+            var entry = await db.Library.Include(e => e.Anime).FirstOrDefaultAsync(e => e.UserId == userId && e.AnimeId == animeId);
             if (entry is null) return Results.NotFound();
             if (entry.Revision != revision) return Conflict();
+            ProgressLog.Record(db, entry, ProgressLog.Read(entry), removed: true);
             db.Library.Remove(entry);
-            try { await db.SaveChangesAsync(); }
+            try { await ProgressLog.SaveAsync(db, userId); }
             catch (DbUpdateConcurrencyException) { return Conflict(); }
             return Results.NoContent();
         });

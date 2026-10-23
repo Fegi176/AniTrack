@@ -5,10 +5,12 @@ export function Pagination({
   page,
   totalPages,
   changePage,
+  label = "Catalog pages",
 }: {
   page: number;
   totalPages: number;
   changePage: (page: number) => void;
+  label?: string;
 }) {
   const pages = [
     ...new Set([
@@ -45,7 +47,7 @@ export function Pagination({
       </span>
     ));
   return (
-    <nav className="pagination" aria-label="Catalog pages">
+    <nav className="pagination" aria-label={label}>
       <button
         className="button secondary page-direction"
         aria-label="Previous"

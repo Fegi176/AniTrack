@@ -6,7 +6,7 @@ A full-stack anime discovery and watchlist application built with **React + Type
 
 ![AniTrack overview](docs/screenshots/overview.png)
 
-Additional previews: [Discovery](docs/screenshots/discover.png), [watchlist](docs/screenshots/library.png), [insights](docs/screenshots/insights.png), and [phone layout](docs/screenshots/mobile.png).
+Additional previews: [Discovery](docs/screenshots/discover.png), [watchlist](docs/screenshots/library.png), [insights](docs/screenshots/insights.png), [history](docs/screenshots/history.png), [achievements](docs/screenshots/achievements.png), and [phone layout](docs/screenshots/mobile.png).
 
 ## Features
 
@@ -17,6 +17,8 @@ Additional previews: [Discovery](docs/screenshots/discover.png), [watchlist](doc
 - Optimistic concurrency checks prevent a stale browser tab from overwriting newer progress. Conflicts offer a reload action so the user can review the latest version before retrying.
 - Session changes are synchronized across tabs, clearing private views when another tab signs out. Requests have a timeout and expired CSRF tokens are refreshed safely.
 - Insights calculated from saved data: episode totals, estimated watch time, average rating, status breakdown, genres, and rating distribution.
+- Private, paginated activity history for library additions, progress, status changes, ratings, note edits, removals, and XML imports. New changes are recorded from this version onward; imports show their import time rather than invented viewing dates.
+- Nine achievements with progress indicators for saved titles, completed stories, episodes, ratings, genres, and movies. Existing/imported progress qualifies, and unlocked milestones survive later edits or removals.
 - Editable display name and bio.
 - Upload, replace, and remove a profile picture from Settings. JPG, PNG, and WebP uploads up to 2 MB are checked and cropped to a 256 px square on the server. Pictures persist with the account and appear in the left sidebar.
 - A dedicated login page is the entry screen for signed-out visitors. Existing sessions open the overview; public catalog browsing remains available.
@@ -96,7 +98,7 @@ npm run test:e2e
 
 API tests cover catalog size and attribution, Unicode aliases, page boundaries, session and CSRF requirements, login/logout, user isolation, invalid progress and ratings, automatic completion, stale updates, deletion, XML round trips, atomic import validation, DTD rejection, and catalog refreshes that preserve user data.
 
-Browser tests cover discovery, account creation, persistence across reloads, progress, insights, profile updates, XML download/upload, demo access, multi-tab conflicts, cross-tab logout, unavailable servers, stalled requests, missing images and metadata, and keyboard focus. Automated WCAG AA checks run on all five main pages at **1440, 768, 390, and 320 pixels**, plus the sign-in, registration, and detail dialogs. See [review notes](docs/portfolio-review.md) for the scope and remaining limitations.
+Browser tests cover discovery, account creation, persistence across reloads, progress, insights, history, permanent achievements, profile updates, XML download/upload, demo access, multi-tab conflicts, cross-tab logout, unavailable servers, stalled requests, missing images and metadata, and keyboard focus. Automated WCAG AA checks run on all seven main pages at **1440, 768, 390, and 320 pixels**, plus the sign-in, registration, and detail dialogs. See [review notes](docs/portfolio-review.md) for the scope and remaining limitations.
 
 To regenerate screenshots with both development servers running:
 

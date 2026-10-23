@@ -86,3 +86,40 @@ export interface Insights {
   ratings: { score: number; count: number }[];
   recent: Entry[];
 }
+export interface Activity {
+  id: number;
+  animeId: number | null;
+  title: string;
+  kind: "Added" | "Updated" | "Removed" | "Imported";
+  fromStatus: Status | null;
+  toStatus: Status | null;
+  fromEpisodes: number | null;
+  toEpisodes: number | null;
+  fromScore: number | null;
+  toScore: number | null;
+  notesChanged: boolean;
+  importedAdded: number;
+  importedUpdated: number;
+  importedSkipped: number;
+  occurredAt: string;
+}
+export interface ActivityPage {
+  items: Activity[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+export interface Achievement {
+  code: string;
+  title: string;
+  description: string;
+  target: number;
+  progress: number;
+  unlockedAt: string | null;
+}
+export interface Achievements {
+  items: Achievement[];
+  unlocked: number;
+  total: number;
+}

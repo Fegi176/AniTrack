@@ -83,7 +83,16 @@ public static class ImportExportEndpoints
                 else updated++;
                 entry.Apply(input, anime);
             }
-            try { await db.SaveChangesAsync(); }
+            if (added + updated > 0)
+                db.Activities.Add(new LibraryActivity
+                {
+                    UserId = userId,
+                    Kind = ActivityKind.Imported,
+                    ImportedAdded = added,
+                    ImportedUpdated = updated,
+                    ImportedSkipped = skipped
+                });
+            try { await ProgressLog.SaveAsync(db, userId); }
             catch (DbUpdateException)
             { return Results.Problem("Your library changed during import. Refresh and try again.", statusCode: 409); }
             var imported = added + updated;

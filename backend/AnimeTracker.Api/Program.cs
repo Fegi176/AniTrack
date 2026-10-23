@@ -87,6 +87,7 @@ app.MapAuthEndpoints();
 app.MapAvatarEndpoints();
 app.MapCatalogEndpoints();
 app.MapLibraryEndpoints();
+app.MapProgressEndpoints();
 app.MapImportExportEndpoints();
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 app.Map("/api/{**path}", () => Results.NotFound());
@@ -97,6 +98,7 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await db.Database.MigrateAsync();
     await CatalogSeeder.UpdateAsync(db, app.Environment.ContentRootPath, app.Logger);
+    await Milestones.RecognizeExistingAsync(db);
 }
 
 app.Run();

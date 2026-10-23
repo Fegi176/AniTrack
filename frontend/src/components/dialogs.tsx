@@ -116,8 +116,8 @@ export function AuthPanel({
       }),
     onSuccess: (user) => {
       resetCsrf();
-      client.removeQueries({ queryKey: ["library"] });
-      client.removeQueries({ queryKey: ["insights"] });
+      for (const key of ["library", "insights", "history", "achievements"])
+        client.removeQueries({ queryKey: [key] });
       client.setQueryData(["me"], user);
       announceSessionChange();
       close();
