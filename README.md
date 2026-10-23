@@ -4,8 +4,6 @@ A full-stack anime discovery and watchlist application built with **React + Type
 
 [![Validate](https://github.com/Fegi176/AniTrack/actions/workflows/ci.yml/badge.svg)](https://github.com/Fegi176/AniTrack/actions/workflows/ci.yml)
 
-This is a focused portfolio rebuild of [Fegi176/MusicQuiz](https://github.com/Fegi176/MusicQuiz). The linked project's current features were an anime tracker plus character systems. AniTrack keeps the catalog, watchlist, profile, and XML import direction; character collection, gacha, currency, and facilities are excluded.
-
 ![AniTrack overview](docs/screenshots/overview.png)
 
 Additional previews: [Discovery](docs/screenshots/discover.png), [watchlist](docs/screenshots/library.png), [insights](docs/screenshots/insights.png), and [phone layout](docs/screenshots/mobile.png).
