@@ -30,7 +30,7 @@ Verified locally on **October 23, 2026**:
 | Published app smoke check | Passed: login entry, SPA routing, production configuration, registration, persistent session, and picture upload/persistence |
 | Rendered screenshots | Inspected desktop pages and phone detail/editor dialogs; no browser runtime errors during capture |
 
-GitHub Actions is configured to repeat the test, build, and published-app checks. A remote workflow run has not been executed from this local workspace.
+GitHub Actions repeats the test, build, and published-app checks on pushes and pull requests. Results are available in the repository's [validation history](https://github.com/Fegi176/AniTrack/actions/workflows/ci.yml).
 
 The browser suite checks all five main pages at widths of 1440, 768, 390, and 320 pixels for horizontal overflow and automated WCAG AA violations. It also checks sign-in, registration, detail dialogs, and keyboard focus behavior. Automated checks supplement visual inspection; they do not establish comprehensive accessibility certification.
 

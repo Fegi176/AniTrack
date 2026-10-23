@@ -117,6 +117,8 @@ Open http://localhost:8080. This builds the React app and serves it from ASP.NET
 
 For a hosted deployment, terminate HTTPS at a reverse proxy, configure trusted forwarded headers and secure cookies for that environment, persist and protect `App_Data`, and run migrations as a deployment step when scaling beyond one instance. This starter applies migrations at startup for the single-instance setup.
 
+The GitHub repository publishes the source and automated checks. [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages) serves static files and cannot run the ASP.NET Core API or SQLite database. A working public application needs a .NET 10 or Docker host with persistent storage for `App_Data`.
+
 ## Data and scope
 
 The application ships a **28,302-title catalog** derived from [anime-offline-database, release 2026-27](https://github.com/manami-project/anime-offline-database/releases/tag/2026-27), dated **July 4, 2026**. It is a snapshot, not a live feed. Scores are upstream aggregate ratings; upcoming titles without released ratings appear unrated. Editor's picks prioritize a short, explicitly curated set before the remaining catalog. Poster URLs reference external providers; no poster files are bundled.
